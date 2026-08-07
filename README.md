@@ -19,6 +19,9 @@
 - 購買力平価 … 出典: World Bank, World Development Indicators, 指標コード `PA.NUS.PPP`(GDP ベース、年次、1990〜2024年)
   - `data/jpn_ppp_annual.csv` — 生データ
   - `data/jpn_ppp_annual.json` — グラフ描画用に整形したデータ
+- ビッグマック指数 … 出典: [The Economist, Big Mac Index](https://github.com/TheEconomist/big-mac-data)(年2回、2000年4月〜2026年7月)
+  - `data/jpn_bigmac_ppp.json` — 日本の暗示PPP(円/ドル)に加工したデータ
+  - `data/big_mac_index_raw.csv` — 全カ国の生データ
 
 ## ファイル構成
 
@@ -26,12 +29,15 @@
 index.html                  可視化ページ(Chart.js)
 data/jpy_usd_monthly.csv    為替レート生データ
 data/jpy_usd_monthly.json   為替レートグラフ用データ
-data/jpn_ppp_annual.csv     購買力平価生データ
-data/jpn_ppp_annual.json    購買力平価グラフ用データ
+data/jpn_ppp_annual.csv     購買力平価(世界銀行)生データ
+data/jpn_ppp_annual.json    購買力平価(世界銀行)グラフ用データ
+data/jpn_bigmac_ppp.json    ビッグマック指数から計算した暗示PPP
+data/big_mac_index_raw.csv  ビッグマック指数 全カ国生データ
 ```
 
 ## 更新履歴
 
+- 2026-08-08 ビッグマック指数による暗示PPPをグラフに追加(緑の点線)、解説を拡充
 - 2026-08-08 購買力平価(PPP)をグラフに重ねて表示し、解説セクションを追加
 - 2026-08-08 各出来事の詳細解説セクションをページ下部に追加(表からアンカーリンク)
 - 2026-08-08 グラフ下部に「為替変動に大きな影響を与えた主な出来事」の表を追加
