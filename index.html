@@ -53,6 +53,17 @@
   </div>
 
   <div class="chart-card" style="margin-top: 24px;">
+    <h2>購買力平価(PPP)について</h2>
+    <div class="event-detail">
+      <p>グラフの<span style="color:#d97706; font-weight:bold;">オレンジの破線</span>は、日本の<strong>購買力平価(PPP、Purchasing Power Parity)</strong>です。世界銀行の「PPP conversion factor(GDP ベース)」を用いており、「アメリカで1ドルで買えるものと同じ財・サービスのセットを日本で買うのに必要な円の金額」を表します。</p>
+      <p>購買力平価は「モノの値段から見た通貨の適正水準」の理論値です。実勢レート(青線)が購買力平価より<strong>上</strong>(数値が大きい)にあるときは円が購買力に対して<strong>割安(円安すぎる)</strong>、<strong>下</strong>にあるときは<strong>割高(円高すぎる)</strong>と解釈されます。</p>
+      <p>グラフからは、1990年代には実勢レートが購買力平価を大きく下回る「行き過ぎた円高」だったのに対し、近年は実勢レートが購買力平価(2024年で約94円)を大きく上回る「行き過ぎた円安」となっていることがわかります。日本の購買力平価自体も、バブル期の187円(1990年)から94円(2024年)へと長期的に低下(円の実力向上)しており、これは日本の物価上昇率がアメリカより長期にわたって低かったことを反映しています。</p>
+      <p>なお、購買力平価はあくまで理論上の目安であり、実際の為替レートは金利差や資金フロー、リスク心理などによって大きく動くため、両者の乖離がすぐに解消されるとは限りません。</p>
+      <p style="color:#888; font-size:0.8rem;">データ: World Bank, World Development Indicators, 指標コード PA.NUS.PPP(年次、1990〜2024年)。<a href="data/jpn_ppp_annual.csv">CSV</a> / <a href="data/jpn_ppp_annual.json">JSON</a></p>
+    </div>
+  </div>
+
+  <div class="chart-card" style="margin-top: 24px;">
     <h2>為替変動に大きな影響を与えた主な出来事</h2>
     <table class="events">
       <thead>
@@ -152,28 +163,41 @@
   </div>
 
   <footer>
-    <p>出典: IMF, International Financial Statistics (IFS), 指標コード ENDE_XDC_USD_RATE(月末、現地通貨/米ドル)。<br>
-    データファイル: <a href="data/jpy_usd_monthly.csv">CSV</a> / <a href="data/jpy_usd_monthly.json">JSON</a><br>
+    <p>出典: 為替レート … IMF, International Financial Statistics (IFS), 指標コード ENDE_XDC_USD_RATE(月末、現地通貨/米ドル) / 購買力平価 … World Bank, World Development Indicators, 指標コード PA.NUS.PPP(年次)。<br>
+    データファイル: 為替レート <a href="data/jpy_usd_monthly.csv">CSV</a> / <a href="data/jpy_usd_monthly.json">JSON</a> ・ 購買力平価 <a href="data/jpn_ppp_annual.csv">CSV</a> / <a href="data/jpn_ppp_annual.json">JSON</a><br>
     本ページはデータ可視化を目的としたものであり、投資助言ではありません。</p>
   </footer>
 </div>
 
 <script>
-fetch('data/jpy_usd_monthly.json')
-  .then(r => r.json())
-  .then(payload => {
-    const points = payload.data.map(([ym, v]) => ({ x: ym + '-01', y: v }));
+Promise.all([
+  fetch('data/jpy_usd_monthly.json').then(r => r.json()),
+  fetch('data/jpn_ppp_annual.json').then(r => r.json())
+])
+  .then(([fx, ppp]) => {
+    const points = fx.data.map(([ym, v]) => ({ x: ym + '-01', y: v }));
+    const pppPoints = ppp.data.map(([y, v]) => ({ x: y + '-01-01', y: v }));
 
     const chart = new Chart(document.getElementById('fxChart'), {
       type: 'line',
       data: { datasets: [{
-        label: '円/ドル(月末)',
+        label: '実勢レート(円/ドル、月末)',
         data: points,
         borderColor: '#2b6cb0',
         borderWidth: 1.5,
         pointRadius: 0,
         pointHitRadius: 6,
         tension: 0.1
+      }, {
+        label: '購買力平価(円/国際ドル、年次)',
+        data: pppPoints,
+        borderColor: '#d97706',
+        borderWidth: 2,
+        borderDash: [6, 4],
+        pointRadius: 2,
+        pointHitRadius: 6,
+        stepped: true,
+        tension: 0
       }]},
       options: {
         responsive: true,
@@ -185,13 +209,13 @@ fetch('data/jpy_usd_monthly.json')
           y: { title: { display: true, text: '円/ドル' } }
         },
         plugins: {
-          legend: { display: false },
+          legend: { display: true },
           tooltip: { callbacks: {
             title: items => {
               const it = items[0];
               return chart.data.datasets[it.datasetIndex].data[it.dataIndex].x.slice(0, 7);
             },
-            label: item => item.parsed.y.toLocaleString('ja-JP') + ' 円/ドル'
+            label: item => item.dataset.label + ': ' + item.parsed.y.toLocaleString('ja-JP')
           }}
         }
       }
@@ -206,10 +230,12 @@ fetch('data/jpy_usd_monthly.json')
       const years = e.target.value;
       if (years === 'all') {
         chart.data.datasets[0].data = points;
+        chart.data.datasets[1].data = pppPoints;
       } else {
         const cutoff = new Date();
         cutoff.setFullYear(cutoff.getFullYear() - Number(years));
         chart.data.datasets[0].data = points.filter(p => new Date(p.x) >= cutoff);
+        chart.data.datasets[1].data = pppPoints.filter(p => new Date(p.x) >= cutoff);
       }
       chart.update();
     });
