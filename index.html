@@ -18,6 +18,13 @@
   .controls { margin-bottom: 12px; font-size: 0.9rem; }
   .controls label { margin-right: 16px; cursor: pointer; }
   .chart-wrap { position: relative; height: 480px; }
+  h2 { font-size: 1.1rem; margin: 0 0 12px; }
+  table.events { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+  table.events th, table.events td { border: 1px solid #e3e6ea; padding: 8px 10px;
+                                     text-align: left; vertical-align: top; }
+  table.events th { background: #f0f2f5; white-space: nowrap; }
+  table.events td:first-child { white-space: nowrap; color: #555; }
+  table.events tbody tr:nth-child(even) { background: #fafbfc; }
   footer { margin-top: 24px; font-size: 0.8rem; color: #888; line-height: 1.6; }
   a { color: #2b6cb0; }
 </style>
@@ -40,6 +47,31 @@
       </label>
     </div>
     <div class="chart-wrap"><canvas id="fxChart"></canvas></div>
+  </div>
+
+  <div class="chart-card" style="margin-top: 24px;">
+    <h2>為替変動に大きな影響を与えた主な出来事</h2>
+    <table class="events">
+      <thead>
+        <tr><th>時期</th><th>出来事</th><th>為替への影響</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1971年8月</td><td>ニクソン・ショック(ドルと金の交換停止)</td><td>固定相場(1ドル=360円)の崩壊へ</td></tr>
+        <tr><td>1971年12月</td><td>スミソニアン協定</td><td>1ドル=308円に切り上げ</td></tr>
+        <tr><td>1973年2月</td><td>変動相場制への移行</td><td>円は265円前後で変動開始</td></tr>
+        <tr><td>1985年9月</td><td>プラザ合意(G5)</td><td>240円前後から1年余りで150円台へ急激な円高</td></tr>
+        <tr><td>1987年2月</td><td>ルーブル合意(G7)</td><td>ドル安の歯止めを図るも円高基調が続く</td></tr>
+        <tr><td>1995年4月</td><td>阪神・淡路大震災後の円高局面</td><td>一時79円台と当時の史上最高値を記録</td></tr>
+        <tr><td>1998年8月〜10月</td><td>ロシア財政危機・LTCM危機</td><td>円キャリー取引の巻き戻しで147円台から111円台へ急激な円高</td></tr>
+        <tr><td>2008年9月</td><td>リーマン・ショック</td><td>100円台から87円台へ円高が加速</td></tr>
+        <tr><td>2011年3月</td><td>東日本大震災</td><td>一時76円台へ急騰、G7が協調介入</td></tr>
+        <tr><td>2011年10月</td><td>円が75円台の史上最高値を更新</td><td>政府・日銀が過去最大規模の円売り介入を実施</td></tr>
+        <tr><td>2013年4月</td><td>日銀の量的・質的金融緩和(アベノミクス)</td><td>80円台から100円台へ大幅な円安</td></tr>
+        <tr><td>2022年3月〜10月</td><td>米FRBの急激な利上げ</td><td>115円前後から151円台へ、約32年ぶりの円安水準に</td></tr>
+        <tr><td>2022年9月〜10月</td><td>政府・日銀の円買い介入</td><td>24年ぶりの円買い介入、一時的に円高へ反転</td></tr>
+        <tr><td>2024年3月〜7月</td><td>日銀のマイナス金利解除・追加利上げ</td><td>7月に161円台と約38年ぶりの円安をつけた後、円買い介入もあり140円台へ反転</td></tr>
+      </tbody>
+    </table>
   </div>
 
   <footer>
