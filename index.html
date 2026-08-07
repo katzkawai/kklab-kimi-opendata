@@ -78,7 +78,10 @@ fetch('data/jpy_usd_monthly.json')
         plugins: {
           legend: { display: false },
           tooltip: { callbacks: {
-            title: items => items[0].label.slice(0, 7),
+            title: items => {
+              const it = items[0];
+              return chart.data.datasets[it.datasetIndex].data[it.dataIndex].x.slice(0, 7);
+            },
             label: item => item.parsed.y.toLocaleString('ja-JP') + ' 円/ドル'
           }}
         }
